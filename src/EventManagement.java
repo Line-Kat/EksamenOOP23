@@ -33,6 +33,16 @@ public class EventManagement {
     public List<Person> listOfAllAttendants() {
         return jdbcUniversity.listOfAllAttendants();
     }
+
+    public void modifyRegistration(Scanner scanner, Student student) {
+        List<Attendant> listAllStudentsAttending = jdbcEvent.listOfStudentAttending();
+        for(Attendant a : listAllStudentsAttending) {
+            if(a.getName().equalsIgnoreCase(student.getName())) {
+                jdbcEvent.updateAttendants(a);
+            }
+        }
+
+    }
     //Program printed for students
     public void printProgram(Student student) {
         System.out.println("**PROGRAM FOR THE GRADUATION CEREMONY**");

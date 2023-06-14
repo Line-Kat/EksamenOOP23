@@ -10,6 +10,9 @@ public class JDBCEvent {
     JDBCOps jdbcOps = new JDBCOps();
     String database = "eventDB";
 
+    public void updateAttendants(Attendant attendant) {
+
+    }
 
     public List<Attendant> listOfStudentAttending() {
         List<Attendant> listOfStudentAttending = new ArrayList<>();

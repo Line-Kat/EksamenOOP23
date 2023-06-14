@@ -193,6 +193,11 @@ public class Menu {
                         break;
                     }
                     case "7" : {
+                        //modify a registration
+                        eventManagement.modifyRegistration(scanner, student);
+                        break;
+                    }
+                    case "8" : {
                         //sign out
                         keepRunning = false;
                     }
@@ -210,7 +215,8 @@ public class Menu {
             System.out.println("4. See participants from one of the programs");
             System.out.println("5. Search for participant by name");
             System.out.println("6. See the program for the ceremony");
-            System.out.println("7. Sign out");
+            System.out.println("7. Modify a registration");
+            System.out.println("8. Sign out");
 
         return scanner.nextLine();
     }
