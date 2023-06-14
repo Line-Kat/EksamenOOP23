@@ -29,7 +29,7 @@ public class Menu {
 
                     for(Student s : listOfAllStudents) {
                         if(userInput.equalsIgnoreCase(s.getName())) {
-                            studentMenu(s);
+                            studentMenu(scanner, s);
                             notOnTheList = false;
                             break;
                         }
@@ -65,18 +65,54 @@ public class Menu {
         System.out.println("3. Exit");
     }
 
-    private void studentMenu(Student student) {
-        printStudentMenu(student);
-    }
-    private void printStudentMenu(Student student) {
+    private void studentMenu(Scanner scanner, Student student) {
         System.out.println("Welcome " + student.getName() + "!");
-        System.out.println("Here are your options:");
-        System.out.println("1. Register for the event");
-        System.out.println("2. See all participants");
-        System.out.println("3. See participants from your program");
-        System.out.println("4. Search for participant");
-        System.out.println("5. See the program for the ceremony");
-        System.out.println("6. Exit");
+        boolean keepRunning = true;
+
+            while(keepRunning) {
+                String userInput = printStudentMenu(scanner);
+                switch(userInput) {
+                    case "1" : {
+                        //register
+                        eventManagement.registerStudent(student);
+                        break;
+                    }
+                    case "2" : {
+                        //list all participants
+                        break;
+                    }
+                    case "3" : {
+                        //list participants for å chosen program
+                        //1. design 2. health 3. it 4. economy
+                        break;
+                    }
+                    case "4" : {
+                        //search for participant by name
+                        break;
+                    }
+                    case "5" : {
+                        //see the program
+                        break;
+                    }
+                    case "6" : {
+                        keepRunning = false;
+                    }
+                    default : {
+                        System.out.println("Invalid input!");
+                    }
+                }
+            }
+    }
+    private String printStudentMenu(Scanner scanner) {
+            System.out.println("Here are your options:");
+            System.out.println("1. Register for the event");
+            System.out.println("2. See all participants");
+            System.out.println("3. See participants from one of the programs");
+            System.out.println("4. Search for participant by name");
+            System.out.println("5. See the program for the ceremony");
+            System.out.println("6. Go back to main menu");
+
+        return scanner.nextLine();
 
         //TODO switch
         //TODO create db
