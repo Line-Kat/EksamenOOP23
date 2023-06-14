@@ -1,10 +1,7 @@
 package jdbc;
 
-import domain.Attendant;
-import domain.AttendantRole;
-import domain.Student;
+import domain.*;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +14,9 @@ public class JDBCEvent {
         List<Attendant> listOfStudentAttending = new ArrayList<>();
 
         try(Connection con = jdbcOps.getConnection("eventDB"); Statement stmt = con.createStatement()) {
-            String getAllStudentAttending = "SELECT * FROM attendants WHERE role='STUDENT'";
+            String getAllStudentAttendingQuery = "SELECT * FROM attendants WHERE role='STUDENT'";
 
-            ResultSet resultSet = stmt.executeQuery(getAllStudentAttending);
+            ResultSet resultSet = stmt.executeQuery(getAllStudentAttendingQuery);
 
             while(resultSet.next()) {
                 int idAttendant = resultSet.getInt("idAttendant");
@@ -35,7 +32,30 @@ public class JDBCEvent {
         }
         return listOfStudentAttending;
     }
-    public Attendant registerAttendant(Student student) {
+
+    public List<Guest> listOGuests() {
+        List<Guest> listOfGuests = new ArrayList<>();
+
+        try(Connection con = jdbcOps.getConnection("eventDB"); Statement stmt = con.createStatement()) {
+            String getGuestsQuery = "SELECT * FROM guests;";
+
+            ResultSet resultSet = stmt.executeQuery(getGuestsQuery);
+
+            while(resultSet.next()) {
+                int idGuest = resultSet.getInt("idGuest");
+                String nameGuest = resultSet.getString("nameGuest");
+
+                Guest guest = new Guest(idGuest, nameGuest);
+
+                listOfGuests.add(guest);
+            }
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return listOfGuests;
+    }
+    public Attendant insertAttendant(Student student) {
         String insertAttendantQuery = "INSERT INTO attendants(nameAttendant, role) VALUES(?, ?);";
         String getIdAttendantQuery = "SELECT MAX(idAttendant) AS maxId FROM attendants;";
 
@@ -44,7 +64,7 @@ public class JDBCEvent {
             List<Attendant> listOfAllStudentAttendants = listOfStudentAttending();
 
             for(Attendant a : listOfAllStudentAttendants) {
-                if(student.getName().equalsIgnoreCase(a.getNameAttendant())) {
+                if(student.getName().equalsIgnoreCase(a.getName())) {
                     System.out.println("You are already registered");
                     System.out.println("If that's not the case, contact administration");
                     return a;
@@ -59,6 +79,7 @@ public class JDBCEvent {
 
             if(resultSet.next()) {
                 int idAttendant = resultSet.getInt("maxId");
+                int numberOfGuests = resultSet.getInt("numberOfGuests");
 
                 System.out.println(student.getName() + ", you are now registered to join the graduation ceremony");
 
@@ -70,4 +91,28 @@ public class JDBCEvent {
         }
         return null;
     }
+
+    public void insertGuest(Attendant attendant, Guest guest) {
+        String insertGuestQuery = "INSERT INTO guests(attendants_idAttendant, nameGuest) VALUES(?, ?);";
+
+        try(Connection con = jdbcOps.getConnection("eventDB"); PreparedStatement stmt = con.prepareStatement(insertGuestQuery)) {
+            List<Guest> listOfGuests = listOGuests();
+
+            for(Guest g : listOfGuests) {
+                if(guest.getName().equalsIgnoreCase(g.getName())) {
+                    System.out.println("The guest is already registered");
+                    System.out.println("If that's not the case, contact administration");
+                    return;
+                }
+            }
+
+            stmt.setInt(1, attendant.getId());
+            stmt.setString(2, guest.getName());
+            stmt.executeUpdate();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

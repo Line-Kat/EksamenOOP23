@@ -4,8 +4,8 @@ public class Staff extends Person {
     private String role;
 
     //constructor
-    public Staff(int id, String name, String role) {
-        super(id, name);
+    public Staff(Integer idStaff, String nameStaff, String role) {
+        super(idStaff, nameStaff);
         this.role = role;
     }
 

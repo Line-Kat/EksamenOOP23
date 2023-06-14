@@ -1,10 +1,9 @@
-import domain.Attendant;
-import domain.Student;
-import domain.StudyProgram;
+import domain.*;
 import jdbc.JDBCEvent;
 import jdbc.JDBCUniversity;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class EventManagement {
     JDBCUniversity jdbcUniversity = new JDBCUniversity();
@@ -15,7 +14,9 @@ public class EventManagement {
     public List<StudyProgram> listOfStudyPrograms() {
         return jdbcUniversity.getStudyPrograms();
     }
-
+    public List<Attendant> listOfStudentsAttending() {
+        return jdbcEvent.listOfStudentAttending();
+    }
     //Program printed for students
     public void printProgram(Student student) {
         System.out.println("**PROGRAM FOR THE GRADUATION CEREMONY**");
@@ -64,10 +65,41 @@ public class EventManagement {
         System.out.println("Introduction");
         System.out.println("Speech from the program responsible of every program");
         System.out.println("Closing remark");
+        System.out.println();
     }
 
-    public void registerStudent(Student student) {
-        Attendant attendant = jdbcEvent.registerAttendant(student);
+    public void registerStudent(Scanner scanner, Student student) {
+        Attendant attendant = jdbcEvent.insertAttendant(student);
+        System.out.println("You may invite four guests");
+        boolean keepRunning = true;
+
+
+        while(keepRunning) {
+            System.out.println("Do you want to invite a guest? (Y/N)");
+            String userInput = scanner.nextLine();
+
+
+            switch (userInput.toLowerCase()) {
+                case "y" : {
+                    addGuest(scanner, attendant);
+                    break;
+                }
+                case "n" : {
+                    keepRunning = false;
+                    break;
+                }
+                default : {
+                    System.out.println("Invalid input");
+                }
+            }
+        }
+    }
+
+    public void addGuest(Scanner scanner, Attendant attendant) {
+        System.out.println("Type the name of the guest you want to invite");
+        String guestName = scanner.nextLine();
+        Guest guest = new Guest(null, guestName);
+        jdbcEvent.insertGuest(attendant, guest);
     }
 
 }
