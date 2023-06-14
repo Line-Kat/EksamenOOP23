@@ -43,11 +43,9 @@ public class EventManagement {
                 return;
             }
         }
-
-
         System.out.println("Invalid input!");
-
     }
+
     //Program printed for students
     public void printProgram(Student student) {
         System.out.println("**PROGRAM FOR THE GRADUATION CEREMONY**");
