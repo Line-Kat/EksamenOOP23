@@ -39,6 +39,7 @@ public class Menu {
                         System.out.println();
                         break;
                     }
+                    break;
                 }
                 case "2" : {
                     eventManagement.printProgram();
@@ -193,13 +194,17 @@ public class Menu {
                         break;
                     }
                     case "7" : {
-                        //modify a registration
-                        eventManagement.modifyRegistration(scanner, student);
+                        //remove a registration
+                        eventManagement.removeRegistration(student);
+                        System.out.println("You are now removed from the registration");
+                        System.out.println("If you change your mind, feel free to log in register again");
+                        keepRunning = false;
                         break;
                     }
                     case "8" : {
                         //sign out
                         keepRunning = false;
+                        break;
                     }
                     default : {
                         System.out.println("Invalid input!");
@@ -215,7 +220,7 @@ public class Menu {
             System.out.println("4. See participants from one of the programs");
             System.out.println("5. Search for participant by name");
             System.out.println("6. See the program for the ceremony");
-            System.out.println("7. Modify a registration");
+            System.out.println("7. Remove registration");
             System.out.println("8. Sign out");
 
         return scanner.nextLine();
