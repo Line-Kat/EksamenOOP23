@@ -1,11 +1,14 @@
+import domain.Attendant;
 import domain.Student;
 import domain.StudyProgram;
+import jdbc.JDBCEvent;
 import jdbc.JDBCUniversity;
 
 import java.util.List;
 
 public class EventManagement {
     JDBCUniversity jdbcUniversity = new JDBCUniversity();
+    JDBCEvent jdbcEvent = new JDBCEvent();
     public List<Student> listOfAllStudents() {
         return jdbcUniversity.getAllStudents();
     }
@@ -61,6 +64,10 @@ public class EventManagement {
         System.out.println("Introduction");
         System.out.println("Speech from the program responsible of every program");
         System.out.println("Closing remark");
+    }
+
+    public void registerStudent(Student student) {
+        Attendant attendant = jdbcEvent.registerAttendant(student);
     }
 
 }
