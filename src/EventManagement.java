@@ -17,6 +17,22 @@ public class EventManagement {
     public List<Attendant> listOfStudentsAttending() {
         return jdbcEvent.listOfStudentAttending();
     }
+
+    public void searchForPersonAttending(String inputName) {
+        List<Person> listOfAllAttending = jdbcUniversity.listOfAllAttendants();
+
+        System.out.println("Your search resulted in: ");
+        for(Person p : listOfAllAttending) {
+            String name = inputName.toLowerCase();
+            if(p.getName().toLowerCase().contains(name)) {
+                System.out.println(p.getName());
+            }
+        }
+        System.out.println();
+    }
+    public List<Person> listOfAllAttendants() {
+        return jdbcUniversity.listOfAllAttendants();
+    }
     //Program printed for students
     public void printProgram(Student student) {
         System.out.println("**PROGRAM FOR THE GRADUATION CEREMONY**");
@@ -59,7 +75,6 @@ public class EventManagement {
 
     //Program printed for users that are not registered as a student
     public void printProgram() {
-        int totalTime = 0;
         System.out.println("**MENU FOR THE GRADUATION CEREMONY**");
         System.out.println("Start time kl. 13.00");
         System.out.println("Introduction");

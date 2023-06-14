@@ -4,7 +4,8 @@ USE eventDB;
 CREATE TABLE attendants (
     idAttendant INT AUTO_INCREMENT NOT NULL,
     nameAttendant VARCHAR(1000),
-    role enum('STUDENT', 'PROGRAM_RESPONSIBLE', 'TEACHER'),
+    role ENUM('STUDENT', 'PROGRAM_RESPONSIBLE', 'TEACHER'),
+    studyProgram ENUM('DESIGN', 'HEALTH', 'IT', 'ECONOMY'),
     PRIMARY KEY (idAttendant)
 );
 
@@ -16,11 +17,11 @@ CREATE TABLE guests (
     FOREIGN KEY (attendants_idAttendant) REFERENCES attendants(idAttendant)
 );
 
-INSERT INTO attendants(nameAttendant, role)
+INSERT INTO attendants(nameAttendant, role, studyProgram)
 VALUES
-    ('Constantine', 'STUDENT'),
-    ('Pål', 'STUDENT'),
-    ('Leah', 'PROGRAM_RESPONSIBLE');
+    ('Constantine', 'STUDENT', 'IT'),
+    ('Pål', 'STUDENT', 'HEALTH'),
+    ('Leah', 'PROGRAM_RESPONSIBLE', null);
 
 INSERT INTO guests(attendants_idAttendant, nameGuest)
 VALUES

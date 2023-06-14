@@ -1,9 +1,7 @@
 import domain.Attendant;
+import domain.Person;
 import domain.Student;
-import domain.StudyProgram;
-import jdbc.JDBCOps;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -88,22 +86,114 @@ public class Menu {
                     }
                     case "3" : {
                         //list all participants
+                        List<Person> listOfAllAttendants = eventManagement.listOfAllAttendants();
+                        System.out.println("Here are the names of all the participants at the graduation ceremony");
+                        for(Person p : listOfAllAttendants) {
+                            System.out.println(p.getName());
+                        }
+                        System.out.println();
                         break;
                     }
                     case "4" : {
                         //list participants for å chosen program
                         //1. design 2. health 3. it 4. economy
+                        System.out.println("Choose program:");
+                        System.out.println("1. Design");
+                        System.out.println("2. Health");
+                        System.out.println("3. IT");
+                        System.out.println("4. Economy");
+
+                        String program = scanner.nextLine();
+
+                        List<Attendant> listOfAllStudentsAttending = eventManagement.listOfStudentsAttending();
+
+                        switch(program) {
+                            case "1" : {
+                                System.out.println("List of students from the program 'Design':");
+                                boolean emptyList = true;
+                                for(Attendant a : listOfAllStudentsAttending) {
+                                    if(a.getStudyProgram().equalsIgnoreCase("design")) {
+                                        System.out.println(a.getName());
+                                        emptyList = false;
+                                    }
+                                }
+                                System.out.println();
+                                if(emptyList) {
+                                    System.out.println("No participants from the program 'Design'");
+                                    System.out.println();
+                                }
+                                break;
+                            }
+                            case "2" : {
+                                System.out.println("List of students from the program 'Health'");
+                                boolean emptyList = true;
+                                for(Attendant a : listOfAllStudentsAttending) {
+                                    if(a.getStudyProgram().equalsIgnoreCase("health")) {
+                                        System.out.println(a.getName());
+                                        emptyList = false;
+                                    }
+                                }
+                                System.out.println();
+                                if(emptyList) {
+                                    System.out.println("No participants from the program 'Health");
+                                    System.out.println();
+                                }
+                                break;
+                            }
+                            case "3" : {
+                                System.out.println("List of students from the program 'IT'");
+                                boolean emptyList = true;
+                                for(Attendant a : listOfAllStudentsAttending) {
+                                    if(a.getStudyProgram().equalsIgnoreCase("it")) {
+                                        System.out.println(a.getName());
+                                        emptyList = false;
+                                    }
+                                }
+                                System.out.println();
+                                if(emptyList) {
+                                    System.out.println("No participants from the program 'IT");
+                                    System.out.println();
+                                }
+                                break;
+                            }
+                            case "4" : {
+                                System.out.println("List of students from the program 'Economy'");
+                                boolean emptyList = true;
+                                for(Attendant a : listOfAllStudentsAttending) {
+                                    if(a.getStudyProgram().equalsIgnoreCase("economy")) {
+                                        System.out.println(a.getName());
+                                        emptyList = false;
+                                    }
+                                }
+                                System.out.println();
+                                if(emptyList) {
+                                    System.out.println("No participants from the program 'Economy");
+                                    System.out.println();
+                                }
+                                break;
+                            }
+                            default : {
+                                System.out.println("Invalid input");
+                                System.out.println();
+                            }
+                        }
+
                         break;
                     }
                     case "5" : {
                         //search for participant by name
+                        System.out.println("Type the name you're searching for");
+                        String name = scanner.nextLine();
+                        eventManagement.searchForPersonAttending(name);
                         break;
                     }
                     case "6" : {
                         //see the program
+                        eventManagement.printProgram(student);
                         break;
                     }
                     case "7" : {
+                        //sign out
                         keepRunning = false;
                     }
                     default : {
@@ -120,7 +210,7 @@ public class Menu {
             System.out.println("4. See participants from one of the programs");
             System.out.println("5. Search for participant by name");
             System.out.println("6. See the program for the ceremony");
-            System.out.println("7. Go back to main menu");
+            System.out.println("7. Sign out");
 
         return scanner.nextLine();
     }
