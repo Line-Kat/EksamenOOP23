@@ -2,21 +2,21 @@ package domain;
 
 public class Person {
     //fields
-    private int id;
+    private Integer id;
     private String name;
 
     //constructor
-    public Person(int id, String name) {
+    public Person(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
     //getters and setters
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -1,3 +1,4 @@
+import domain.Attendant;
 import domain.Student;
 import domain.StudyProgram;
 import jdbc.JDBCOps;
@@ -74,27 +75,35 @@ public class Menu {
                 switch(userInput) {
                     case "1" : {
                         //register
-                        eventManagement.registerStudent(student);
+                        eventManagement.registerStudent(scanner, student);
                         break;
                     }
                     case "2" : {
+                        //list all student participants
+                        List<Attendant> listOfStudentsAttending = eventManagement.listOfStudentsAttending();
+                        System.out.println("Here are the names of the students participating at the graduation ceremony:");
+                        for(Attendant a : listOfStudentsAttending) {
+                            System.out.println(a.getName());
+                        }
+                    }
+                    case "3" : {
                         //list all participants
                         break;
                     }
-                    case "3" : {
+                    case "4" : {
                         //list participants for å chosen program
                         //1. design 2. health 3. it 4. economy
                         break;
                     }
-                    case "4" : {
+                    case "5" : {
                         //search for participant by name
                         break;
                     }
-                    case "5" : {
+                    case "6" : {
                         //see the program
                         break;
                     }
-                    case "6" : {
+                    case "7" : {
                         keepRunning = false;
                     }
                     default : {
@@ -106,15 +115,13 @@ public class Menu {
     private String printStudentMenu(Scanner scanner) {
             System.out.println("Here are your options:");
             System.out.println("1. Register for the event");
-            System.out.println("2. See all participants");
-            System.out.println("3. See participants from one of the programs");
-            System.out.println("4. Search for participant by name");
-            System.out.println("5. See the program for the ceremony");
-            System.out.println("6. Go back to main menu");
+            System.out.println("2. List all students participating in the ceremony");
+            System.out.println("3. See all participants");
+            System.out.println("4. See participants from one of the programs");
+            System.out.println("5. Search for participant by name");
+            System.out.println("6. See the program for the ceremony");
+            System.out.println("7. Go back to main menu");
 
         return scanner.nextLine();
-
-        //TODO switch
-        //TODO create db
     }
 }

@@ -5,8 +5,8 @@ public class Student extends Person{
     private String studyProgram;
 
     //constructor
-    public Student(int id, String name, String studyProgram) {
-        super(id, name);
+    public Student(Integer idStudent, String nameStudent, String studyProgram) {
+        super(idStudent, nameStudent);
         this.studyProgram = studyProgram;
     }
 
