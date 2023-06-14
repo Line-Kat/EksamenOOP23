@@ -2,20 +2,20 @@ package domain;
 
 public class Student extends Person{
     //fields
-    private StudyProgram studyProgram;
+    private String studyProgram;
 
     //constructor
-    public Student(int id, String name, StudyProgram studyProgram) {
+    public Student(int id, String name, String studyProgram) {
         super(id, name);
         this.studyProgram = studyProgram;
     }
 
     //getters and setters
-    public StudyProgram getStudyProgram() {
+    public String getStudyProgram() {
         return studyProgram;
     }
 
-    public void setStudyProgram(StudyProgram studyProgram) {
+    public void setStudyProgram(String studyProgram) {
         this.studyProgram = studyProgram;
     }
 }
