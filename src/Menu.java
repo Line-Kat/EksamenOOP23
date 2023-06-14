@@ -11,7 +11,7 @@ public class Menu {
     EventManagement eventManagement = new EventManagement();
 
     public void runProgram() {
-        System.out.println("Welcome!");
+        System.out.println("Welcome to EventManagement!");
 
         boolean keepRunning = true;
 
@@ -77,5 +77,8 @@ public class Menu {
         System.out.println("4. Search for participant");
         System.out.println("5. See the program for the ceremony");
         System.out.println("6. Exit");
+
+        //TODO switch
+        //TODO create db
     }
 }

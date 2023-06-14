@@ -12,10 +12,13 @@ public class EventManagement {
     public List<StudyProgram> listOfStudyPrograms() {
         return jdbcUniversity.getStudyPrograms();
     }
-    public void printProgram() {
+
+    //Program printed for students
+    public void printProgram(Student student) {
         System.out.println("**PROGRAM FOR THE GRADUATION CEREMONY**");
         System.out.println("Start time kl. 13.00");
         System.out.println("Introduction");
+        System.out.println("You are a part of the study program " + student.getStudyProgram());
         int totalTime = 30;
 
         List<StudyProgram> listOfStudyPrograms = listOfStudyPrograms();
@@ -50,33 +53,14 @@ public class EventManagement {
         System.out.println();
     }
 
-    //TODO skrive ut meny når bruker skriver ut (skal stå i programmet)
-    public void printProgram(Student s) {
+    //Program printed for users that are not registered as a student
+    public void printProgram() {
         int totalTime = 0;
         System.out.println("**MENU FOR THE GRADUATION CEREMONY**");
         System.out.println("Start time kl. 13.00");
         System.out.println("Introduction");
-        totalTime += 30;
-        System.out.println("You're registered as a part of the program " + s.getStudyProgram());
-
-        List<StudyProgram> listOfStudyPrograms = listOfStudyPrograms();
-
-        for (StudyProgram p : listOfStudyPrograms) {
-            System.out.println("Program: " + p.getNameProgram());
-            System.out.println("Speech from the program responsible " + p.getProgramResponsible());
-            totalTime += 1;
-            //TODO legge til 1 min for hver 5.student
-            System.out.println("5 minutes break");
-            totalTime += 5;
-        }
-
+        System.out.println("Speech from the program responsible of every program");
         System.out.println("Closing remark");
-        totalTime += 15;
-
-        System.out.println("The ceremony will take " + totalTime + "minutes");
-        //TODO må ha kontakt med tabellen studyprogram(+ staff) for å printe ut navn på programmet og studieansvarlig
-
-
     }
 
 }
