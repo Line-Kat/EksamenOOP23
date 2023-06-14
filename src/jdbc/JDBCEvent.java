@@ -10,8 +10,23 @@ public class JDBCEvent {
     JDBCOps jdbcOps = new JDBCOps();
     String database = "eventDB";
 
-    public void updateAttendants(Attendant attendant) {
+    public void deleteFromAttendants(Attendant attendant) {
+        String deleteFromGuests = "DELETE FROM guests WHERE attendants_idAttendant=?;";
+        String deleteFromAttendants = "DELETE FROM attendants WHERE idAttendant=?;";
 
+        try(Connection con = jdbcOps.getConnection(database);
+            PreparedStatement stmtGuest = con.prepareStatement(deleteFromGuests);
+            PreparedStatement stmtAttendant = con.prepareStatement(deleteFromAttendants)) {
+
+            stmtGuest.setInt(1, attendant.getId());
+            stmtGuest.executeUpdate();
+
+            stmtAttendant.setInt(1, attendant.getId());
+            stmtAttendant.executeUpdate();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<Attendant> listOfStudentAttending() {
@@ -63,7 +78,7 @@ public class JDBCEvent {
         return listOfGuests;
     }
     public Attendant insertAttendant(Student student) {
-        String insertAttendantQuery = "INSERT INTO attendants(nameAttendant, role) VALUES(?, ?);";
+        String insertAttendantQuery = "INSERT INTO attendants(nameAttendant, role, studyProgram) VALUES(?, ?, ?);";
         String getIdAttendantQuery = "SELECT MAX(idAttendant) AS maxId FROM attendants;";
 
         try(Connection con = jdbcOps.getConnection(database); PreparedStatement stmt = con.prepareStatement(insertAttendantQuery)) {
@@ -80,13 +95,14 @@ public class JDBCEvent {
 
             stmt.setString(1, student.getName());
             stmt.setString(2, "STUDENT");
+            stmt.setString(3, student.getStudyProgram());
             stmt.executeUpdate();
 
             ResultSet resultSet = stmt.executeQuery(getIdAttendantQuery);
 
             if(resultSet.next()) {
                 int idAttendant = resultSet.getInt("maxId");
-                String studyProgram = resultSet.getString("studyProgram");
+                String studyProgram = student.getStudyProgram();
 
                 System.out.println(student.getName() + ", you are now registered to join the graduation ceremony");
 

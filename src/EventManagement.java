@@ -34,13 +34,18 @@ public class EventManagement {
         return jdbcUniversity.listOfAllAttendants();
     }
 
-    public void modifyRegistration(Scanner scanner, Student student) {
+    public void removeRegistration(Student student) {
+
         List<Attendant> listAllStudentsAttending = jdbcEvent.listOfStudentAttending();
         for(Attendant a : listAllStudentsAttending) {
             if(a.getName().equalsIgnoreCase(student.getName())) {
-                jdbcEvent.updateAttendants(a);
+                jdbcEvent.deleteFromAttendants(a);
+                return;
             }
         }
+
+
+        System.out.println("Invalid input!");
 
     }
     //Program printed for students
