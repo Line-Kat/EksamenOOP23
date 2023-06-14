@@ -8,12 +8,15 @@ import java.util.List;
 
 public class JDBCEvent {
     JDBCOps jdbcOps = new JDBCOps();
-    JDBCUniversity jdbcUniversity = new JDBCUniversity();
+    String database = "eventDB";
+
 
     public List<Attendant> listOfStudentAttending() {
         List<Attendant> listOfStudentAttending = new ArrayList<>();
 
-        try(Connection con = jdbcOps.getConnection("eventDB"); Statement stmt = con.createStatement()) {
+        try(Connection con = jdbcOps.getConnection(database);
+            Statement stmt = con.createStatement()) {
+
             String getAllStudentAttendingQuery = "SELECT * FROM attendants WHERE role='STUDENT'";
 
             ResultSet resultSet = stmt.executeQuery(getAllStudentAttendingQuery);
@@ -21,8 +24,9 @@ public class JDBCEvent {
             while(resultSet.next()) {
                 int idAttendant = resultSet.getInt("idAttendant");
                 String nameAttendant = resultSet.getString("nameAttendant");
+                String studyProgram = resultSet.getString("studyProgram");
 
-                Attendant attendant = new Attendant(idAttendant, nameAttendant, AttendantRole.STUDENT);
+                Attendant attendant = new Attendant(idAttendant, nameAttendant, AttendantRole.STUDENT, studyProgram);
 
                 listOfStudentAttending.add(attendant);
             }
@@ -36,7 +40,7 @@ public class JDBCEvent {
     public List<Guest> listOGuests() {
         List<Guest> listOfGuests = new ArrayList<>();
 
-        try(Connection con = jdbcOps.getConnection("eventDB"); Statement stmt = con.createStatement()) {
+        try(Connection con = jdbcOps.getConnection(database); Statement stmt = con.createStatement()) {
             String getGuestsQuery = "SELECT * FROM guests;";
 
             ResultSet resultSet = stmt.executeQuery(getGuestsQuery);
@@ -59,7 +63,7 @@ public class JDBCEvent {
         String insertAttendantQuery = "INSERT INTO attendants(nameAttendant, role) VALUES(?, ?);";
         String getIdAttendantQuery = "SELECT MAX(idAttendant) AS maxId FROM attendants;";
 
-        try(Connection con = jdbcOps.getConnection("eventDB"); PreparedStatement stmt = con.prepareStatement(insertAttendantQuery)) {
+        try(Connection con = jdbcOps.getConnection(database); PreparedStatement stmt = con.prepareStatement(insertAttendantQuery)) {
 
             List<Attendant> listOfAllStudentAttendants = listOfStudentAttending();
 
@@ -79,11 +83,11 @@ public class JDBCEvent {
 
             if(resultSet.next()) {
                 int idAttendant = resultSet.getInt("maxId");
-                int numberOfGuests = resultSet.getInt("numberOfGuests");
+                String studyProgram = resultSet.getString("studyProgram");
 
                 System.out.println(student.getName() + ", you are now registered to join the graduation ceremony");
 
-                return new Attendant(idAttendant, student.getName(), AttendantRole.STUDENT);
+                return new Attendant(idAttendant, student.getName(), AttendantRole.STUDENT, studyProgram);
             }
         }
         catch(SQLException e) {
@@ -95,7 +99,7 @@ public class JDBCEvent {
     public void insertGuest(Attendant attendant, Guest guest) {
         String insertGuestQuery = "INSERT INTO guests(attendants_idAttendant, nameGuest) VALUES(?, ?);";
 
-        try(Connection con = jdbcOps.getConnection("eventDB"); PreparedStatement stmt = con.prepareStatement(insertGuestQuery)) {
+        try(Connection con = jdbcOps.getConnection(database); PreparedStatement stmt = con.prepareStatement(insertGuestQuery)) {
             List<Guest> listOfGuests = listOGuests();
 
             for(Guest g : listOfGuests) {

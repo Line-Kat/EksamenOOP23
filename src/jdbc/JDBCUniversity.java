@@ -1,7 +1,6 @@
 package jdbc;
 
-import domain.Student;
-import domain.StudyProgram;
+import domain.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -13,9 +12,11 @@ import java.util.List;
 public class JDBCUniversity {
 
     JDBCOps jdbcOps = new JDBCOps();
+    JDBCEvent jdbcEvent = new JDBCEvent();
+    String database = "universityDB";
     public List<Student> getAllStudents() {
         List<Student> listOfAllStudents = new ArrayList<>();
-        try(Connection con = jdbcOps.getConnection("universityDB"); Statement stmt = con.createStatement()) {
+        try(Connection con = jdbcOps.getConnection(database); Statement stmt = con.createStatement()) {
             String getAllStudentsQuery = "SELECT * FROM student JOIN studyProgram ON studyProgram_idStudyProgram = idStudyProgram;";
 
             ResultSet resultSet = stmt.executeQuery(getAllStudentsQuery);
@@ -39,7 +40,7 @@ public class JDBCUniversity {
     public List<StudyProgram> getStudyPrograms() {
         List<StudyProgram> listOfStudyPrograms = new ArrayList<>();
 
-        try(Connection con = jdbcOps.getConnection("universityDB"); Statement stmt = con.createStatement()) {
+        try(Connection con = jdbcOps.getConnection(database); Statement stmt = con.createStatement()) {
             String getStudyProgramsQuery = "SELECT * FROM studyProgram JOIN staff ON idStudyProgram = studyProgram_idStudyProgram WHERE staffRole_idStaffRole=2;";
 
             ResultSet resultSet = stmt.executeQuery(getStudyProgramsQuery);
@@ -58,6 +59,52 @@ public class JDBCUniversity {
             e.printStackTrace();
         }
         return listOfStudyPrograms;
+    }
+
+    public List<Person> listOfAllAttendants() {
+        List<Person> listOfAllAttendants = new ArrayList<>();
+
+        try(
+                Connection con = jdbcOps.getConnection(database);
+                Statement stmt = con.createStatement()) {
+
+            String getAllStaffQuery = "SELECT * FROM staff;";
+
+            ResultSet resultSet = stmt.executeQuery(getAllStaffQuery);
+
+            while(resultSet.next()) {
+                int idPerson = resultSet.getInt("idStaff");
+                String namePerson = resultSet.getString("nameStaff");
+
+                Person person = new Person(idPerson, namePerson);
+
+                listOfAllAttendants.add(person);
+            }
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        List<Attendant> listOfStudentsAttending = jdbcEvent.listOfStudentAttending();
+        for(Person p : listOfStudentsAttending) {
+            int idPerson = p.getId();
+            String namePerson = p.getName();
+
+            Person person = new Person(idPerson, namePerson);
+
+            listOfAllAttendants.add(person);
+        }
+
+        List<Guest> listGuests = jdbcEvent.listOGuests();
+        for(Guest g : listGuests) {
+            int idPerson = g.getId();
+            String namePerson = g.getName();
+
+            Person person = new Person(idPerson, namePerson);
+            listOfAllAttendants.add(person);
+        }
+
+        return listOfAllAttendants;
     }
 
 }
