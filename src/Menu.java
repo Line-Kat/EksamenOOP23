@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
+    //creates scanner only once and sends it as argument to different methods
     Scanner scanner = new Scanner(System.in);
     EventManagement eventManagement = new EventManagement();
 
@@ -19,7 +20,7 @@ public class Menu {
             String userInput = scanner.nextLine();
 
             switch(userInput) {
-                //sign in
+                //sign in user only if s(he) is a student at the school (in the student table)
                 case "1" : {
                     System.out.println("Name:");
                     userInput = scanner.nextLine();
@@ -42,11 +43,12 @@ public class Menu {
                     break;
                 }
                 case "2" : {
+                    //prints the program for users that are not students (method printProgram with signature with no parameters)
                     eventManagement.printProgram();
                     break;
                 }
                 case "3": {
-                    //exit
+                    //exit the program
                     System.out.println("Thank you for using EventManager");
                     keepRunning = false;
                     break;
@@ -58,6 +60,7 @@ public class Menu {
         }
     }
 
+    //method to print out main menu
     private void printMainMenu() {
         System.out.println("Here are your options:");
         System.out.println("1. Sign in");
