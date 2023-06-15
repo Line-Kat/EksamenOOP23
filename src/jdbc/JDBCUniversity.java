@@ -10,13 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JDBCUniversity {
-
     JDBCOps jdbcOps = new JDBCOps();
     JDBCEvent jdbcEvent = new JDBCEvent();
     String database = "universityDB";
+
+    //method that returns a list of all students from the table student
     public List<Student> getAllStudents() {
         List<Student> listOfAllStudents = new ArrayList<>();
-        try(Connection con = jdbcOps.getConnection(database); Statement stmt = con.createStatement()) {
+        try(Connection con = jdbcOps.getConnection(database);
+            Statement stmt = con.createStatement()) {
+
             String getAllStudentsQuery = "SELECT * FROM student JOIN studyProgram ON studyProgram_idStudyProgram = idStudyProgram;";
 
             ResultSet resultSet = stmt.executeQuery(getAllStudentsQuery);
@@ -37,10 +40,13 @@ public class JDBCUniversity {
         return listOfAllStudents;
     }
 
+    //method that returns a list of the programs with the program responsible
     public List<StudyProgram> getStudyPrograms() {
         List<StudyProgram> listOfStudyPrograms = new ArrayList<>();
 
-        try(Connection con = jdbcOps.getConnection(database); Statement stmt = con.createStatement()) {
+        try(Connection con = jdbcOps.getConnection(database);
+            Statement stmt = con.createStatement()) {
+
             String getStudyProgramsQuery = "SELECT * FROM studyProgram JOIN staff ON idStudyProgram = studyProgram_idStudyProgram WHERE staffRole_idStaffRole=2;";
 
             ResultSet resultSet = stmt.executeQuery(getStudyProgramsQuery);
@@ -61,12 +67,12 @@ public class JDBCUniversity {
         return listOfStudyPrograms;
     }
 
+    //method that returns a list of all the attendants (students, guests, teachers, program responsible)
     public List<Person> listOfAllAttendants() {
         List<Person> listOfAllAttendants = new ArrayList<>();
 
-        try(
-                Connection con = jdbcOps.getConnection(database);
-                Statement stmt = con.createStatement()) {
+        try(Connection con = jdbcOps.getConnection(database);
+            Statement stmt = con.createStatement()) {
 
             String getAllStaffQuery = "SELECT * FROM staff;";
 
@@ -95,7 +101,7 @@ public class JDBCUniversity {
             listOfAllAttendants.add(person);
         }
 
-        List<Guest> listGuests = jdbcEvent.listOGuests();
+        List<Guest> listGuests = jdbcEvent.listOfGuests();
         for(Guest g : listGuests) {
             int idPerson = g.getId();
             String namePerson = g.getName();
@@ -106,5 +112,4 @@ public class JDBCUniversity {
 
         return listOfAllAttendants;
     }
-
 }

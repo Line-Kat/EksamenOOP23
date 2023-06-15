@@ -10,6 +10,7 @@ public class JDBCEvent {
     JDBCOps jdbcOps = new JDBCOps();
     String database = "eventDB";
 
+    //method that deletes student from attending table and the invited guests from the guest table
     public void deleteFromAttendants(Attendant attendant) {
         String deleteFromGuests = "DELETE FROM guests WHERE attendants_idAttendant=?;";
         String deleteFromAttendants = "DELETE FROM attendants WHERE idAttendant=?;";
@@ -29,6 +30,7 @@ public class JDBCEvent {
         }
     }
 
+    //method that returns a list of the students attending the graduation ceremony
     public List<Attendant> listOfStudentAttending() {
         List<Attendant> listOfStudentAttending = new ArrayList<>();
 
@@ -44,7 +46,7 @@ public class JDBCEvent {
                 String nameAttendant = resultSet.getString("nameAttendant");
                 String studyProgram = resultSet.getString("studyProgram");
 
-                Attendant attendant = new Attendant(idAttendant, nameAttendant, AttendantRole.STUDENT, studyProgram);
+                Attendant attendant = new Attendant(idAttendant, nameAttendant, "STUDENT", studyProgram);
 
                 listOfStudentAttending.add(attendant);
             }
@@ -55,10 +57,13 @@ public class JDBCEvent {
         return listOfStudentAttending;
     }
 
-    public List<Guest> listOGuests() {
+    //method that returns a list of the guests attending the graduation ceremony
+    public List<Guest> listOfGuests() {
         List<Guest> listOfGuests = new ArrayList<>();
 
-        try(Connection con = jdbcOps.getConnection(database); Statement stmt = con.createStatement()) {
+        try(Connection con = jdbcOps.getConnection(database);
+            Statement stmt = con.createStatement()) {
+
             String getGuestsQuery = "SELECT * FROM guests;";
 
             ResultSet resultSet = stmt.executeQuery(getGuestsQuery);
@@ -77,11 +82,16 @@ public class JDBCEvent {
         }
         return listOfGuests;
     }
+
+    //method that inserts the student logged in into the attending table
+    //if the student is already in the attending table, (s)he won't be registered again
+    //the method returns the attendant, so the id can be used as foreign key int the guest table
     public Attendant insertAttendant(Student student) {
         String insertAttendantQuery = "INSERT INTO attendants(nameAttendant, role, studyProgram) VALUES(?, ?, ?);";
         String getIdAttendantQuery = "SELECT MAX(idAttendant) AS maxId FROM attendants;";
 
-        try(Connection con = jdbcOps.getConnection(database); PreparedStatement stmt = con.prepareStatement(insertAttendantQuery)) {
+        try(Connection con = jdbcOps.getConnection(database);
+            PreparedStatement stmt = con.prepareStatement(insertAttendantQuery)) {
 
             List<Attendant> listOfAllStudentAttendants = listOfStudentAttending();
 
@@ -106,7 +116,7 @@ public class JDBCEvent {
 
                 System.out.println(student.getName() + ", you are now registered to join the graduation ceremony");
 
-                return new Attendant(idAttendant, student.getName(), AttendantRole.STUDENT, studyProgram);
+                return new Attendant(idAttendant, student.getName(), "STUDENT", studyProgram);
             }
         }
         catch(SQLException e) {
@@ -115,6 +125,7 @@ public class JDBCEvent {
         return null;
     }
 
+    //method that deletes a guest from the guest table
     public void deleteGuest(Attendant attendant, String nameGuest) {
         String deleteFromGuestsQuery = "DELETE FROM guests WHERE attendants_idAttendant=? AND nameGuest=?;";
 
@@ -129,13 +140,16 @@ public class JDBCEvent {
         catch(SQLException e) {
             e.printStackTrace();
         }
-
     }
+
+    //method that inserts a guest into guest table, if s(he) isn't already in the guest table
     public void insertGuest(Attendant attendant, Guest guest) {
         String insertGuestQuery = "INSERT INTO guests(attendants_idAttendant, nameGuest) VALUES(?, ?);";
 
-        try(Connection con = jdbcOps.getConnection(database); PreparedStatement stmt = con.prepareStatement(insertGuestQuery)) {
-            List<Guest> listOfGuests = listOGuests();
+        try(Connection con = jdbcOps.getConnection(database);
+            PreparedStatement stmt = con.prepareStatement(insertGuestQuery)) {
+
+            List<Guest> listOfGuests = listOfGuests();
 
             for(Guest g : listOfGuests) {
                 if(guest.getName().equalsIgnoreCase(g.getName())) {
@@ -153,5 +167,4 @@ public class JDBCEvent {
             e.printStackTrace();
         }
     }
-
 }
