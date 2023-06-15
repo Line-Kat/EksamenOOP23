@@ -17,7 +17,11 @@ public class EventManagement {
     public List<Attendant> listOfStudentsAttending() {
         return jdbcEvent.listOfStudentAttending();
     }
+    public List<Person> listOfAllAttendants() {
+        return jdbcUniversity.listOfAllAttendants();
+    }
 
+    //method to search among everyone attending the graduation ceremony by name
     public void searchForPersonAttending(String inputName) {
         List<Person> listOfAllAttending = jdbcUniversity.listOfAllAttendants();
 
@@ -30,10 +34,8 @@ public class EventManagement {
         }
         System.out.println();
     }
-    public List<Person> listOfAllAttendants() {
-        return jdbcUniversity.listOfAllAttendants();
-    }
 
+    //method to remove a students registration
     public void removeRegistration(Student student) {
 
         List<Attendant> listAllStudentsAttending = jdbcEvent.listOfStudentAttending();
@@ -44,6 +46,7 @@ public class EventManagement {
         }
     }
 
+    //method to add or remove a students guests
     public void modifyRegistration(Scanner scanner, Student student) {
         System.out.println("You can change your guests");
         System.out.println("1. To remove guests");
@@ -54,7 +57,7 @@ public class EventManagement {
 
         for(Attendant a : listAllStudentsAttending) {
             if(a.getName().equalsIgnoreCase(student.getName()) && userInput.equals("1")) {
-                List<Guest> listOfGuests = jdbcEvent.listOGuests();
+                List<Guest> listOfGuests = jdbcEvent.listOfGuests();
                 System.out.println("Type the name of the guest you want to remove");
                 String nameGuest = scanner.nextLine();
 
@@ -127,16 +130,15 @@ public class EventManagement {
         System.out.println();
     }
 
+    //method to let the student register for the graduation ceremony and invite guests that will be registered in the guest table
     public void registerStudent(Scanner scanner, Student student) {
         Attendant attendant = jdbcEvent.insertAttendant(student);
-        System.out.println("You may invite four guests");
-        boolean keepRunning = true;
 
+        boolean keepRunning = true;
 
         while(keepRunning) {
             System.out.println("Do you want to invite a guest? (Y/N)");
             String userInput = scanner.nextLine();
-
 
             switch (userInput.toLowerCase()) {
                 case "y" : {
@@ -154,11 +156,11 @@ public class EventManagement {
         }
     }
 
-    public void addGuest(Scanner scanner, Attendant attendant) {
+    //method to add a guest
+    private void addGuest(Scanner scanner, Attendant attendant) {
         System.out.println("Type the name of the guest you want to invite");
         String guestName = scanner.nextLine();
         Guest guest = new Guest(null, guestName);
         jdbcEvent.insertGuest(attendant, guest);
     }
-
 }

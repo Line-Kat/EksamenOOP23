@@ -13,11 +13,11 @@ public class Attendant extends Person{
     }
 
     //getters and setters
-    public AttendantRole getAttendantRole() {
+    public String getAttendantRole() {
         return attendantRole;
     }
 
-    public void setAttendantRole(AttendantRole attendantRole) {
+    public void setAttendantRole(String attendantRole) {
         this.attendantRole = attendantRole;
     }
 

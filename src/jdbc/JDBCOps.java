@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+//since there are two databases to connect to in this task, there's an input string to which database to connect to
 public class JDBCOps {
     public Connection getConnection(String database) {
         try{
