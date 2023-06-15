@@ -24,13 +24,18 @@ public class EventManagement {
     //method to search among everyone attending the graduation ceremony by name
     public void searchForPersonAttending(String inputName) {
         List<Person> listOfAllAttending = jdbcUniversity.listOfAllAttendants();
+        boolean listIsEmpty = true;
 
         System.out.println("Your search resulted in: ");
         for(Person p : listOfAllAttending) {
             String name = inputName.toLowerCase();
             if(p.getName().toLowerCase().contains(name)) {
                 System.out.println(p.getName());
+                listIsEmpty = false;
             }
+        }
+        if(listIsEmpty) {
+            System.out.println("Didn't find the person you searched for");
         }
         System.out.println();
     }
