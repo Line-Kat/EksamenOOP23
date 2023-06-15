@@ -16,7 +16,6 @@ public class Attendant extends Person{
     public String getAttendantRole() {
         return attendantRole;
     }
-
     public void setAttendantRole(String attendantRole) {
         this.attendantRole = attendantRole;
     }
