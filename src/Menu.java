@@ -68,158 +68,161 @@ public class Menu {
         System.out.println("3. Exit");
     }
 
+    //method to handle menu for user that are logged in as student
     private void studentMenu(Scanner scanner, Student student) {
         System.out.println("Welcome " + student.getName() + "!");
         boolean keepRunning = true;
 
-            while(keepRunning) {
-                String userInput = printStudentMenu(scanner);
-                switch(userInput) {
-                    case "1" : {
-                        //register
-                        eventManagement.registerStudent(scanner, student);
-                        break;
+        while(keepRunning) {
+            String userInput = printStudentMenu(scanner);
+            switch(userInput) {
+                case "1" : {
+                    //register student as attendant to the graduation ceremony
+                    eventManagement.registerStudent(scanner, student);
+                    break;
+                }
+                case "2" : {
+                    //list all student participants
+                    List<Attendant> listOfStudentsAttending = eventManagement.listOfStudentsAttending();
+                    System.out.println("Here are the names of the students participating at the graduation ceremony:");
+                    for(Attendant a : listOfStudentsAttending) {
+                        System.out.println(a.getName());
                     }
-                    case "2" : {
-                        //list all student participants
-                        List<Attendant> listOfStudentsAttending = eventManagement.listOfStudentsAttending();
-                        System.out.println("Here are the names of the students participating at the graduation ceremony:");
-                        for(Attendant a : listOfStudentsAttending) {
-                            System.out.println(a.getName());
+                    break;
+                }
+                case "3" : {
+                    //list all participants (including program responsible, teachers, students, guests)
+                    List<Person> listOfAllAttendants = eventManagement.listOfAllAttendants();
+                    System.out.println("Here are the names of all the participants at the graduation ceremony");
+                    for(Person p : listOfAllAttendants) {
+                        System.out.println(p.getName());
+                    }
+                    System.out.println();
+                    break;
+                }
+                case "4" : {
+                    //list students for å chosen program
+                    //1. design 2. health 3. it 4. economy
+                    System.out.println("Choose program:");
+                    System.out.println("1. Design");
+                    System.out.println("2. Health");
+                    System.out.println("3. IT");
+                    System.out.println("4. Economy");
+
+                    String program = scanner.nextLine();
+
+                    List<Attendant> listOfAllStudentsAttending = eventManagement.listOfStudentsAttending();
+
+                    switch(program) {
+                        case "1" : {
+                            System.out.println("List of students from the program 'Design':");
+                            boolean emptyList = true;
+                            for(Attendant a : listOfAllStudentsAttending) {
+                                if(a.getStudyProgram().equalsIgnoreCase("design")) {
+                                    System.out.println(a.getName());
+                                    emptyList = false;
+                                }
+                            }
+                            System.out.println();
+                            if(emptyList) {
+                                System.out.println("No participants from the program 'Design'");
+                                System.out.println();
+                            }
+                            break;
+                        }
+                        case "2" : {
+                            System.out.println("List of students from the program 'Health'");
+                            boolean emptyList = true;
+                            for(Attendant a : listOfAllStudentsAttending) {
+                                if(a.getStudyProgram().equalsIgnoreCase("health")) {
+                                    System.out.println(a.getName());
+                                    emptyList = false;
+                                }
+                            }
+                            System.out.println();
+                            if(emptyList) {
+                                System.out.println("No participants from the program 'Health'");
+                                System.out.println();
+                            }
+                            break;
+                        }
+                        case "3" : {
+                            System.out.println("List of students from the program 'IT'");
+                            boolean emptyList = true;
+                            for(Attendant a : listOfAllStudentsAttending) {
+                                if(a.getStudyProgram().equalsIgnoreCase("it")) {
+                                    System.out.println(a.getName());
+                                    emptyList = false;
+                                }
+                            }
+                            System.out.println();
+                            if(emptyList) {
+                                System.out.println("No participants from the program 'IT'");
+                                System.out.println();
+                            }
+                            break;
+                        }
+                        case "4" : {
+                            System.out.println("List of students from the program 'Economy'");
+                            boolean emptyList = true;
+                            for(Attendant a : listOfAllStudentsAttending) {
+                                if(a.getStudyProgram().equalsIgnoreCase("economy")) {
+                                    System.out.println(a.getName());
+                                    emptyList = false;
+                                }
+                            }
+                            System.out.println();
+                            if(emptyList) {
+                                System.out.println("No participants from the program 'Economy'");
+                                System.out.println();
+                            }
+                            break;
+                        }
+                        default : {
+                            System.out.println("Invalid input");
+                            System.out.println();
                         }
                     }
-                    case "3" : {
-                        //list all participants
-                        List<Person> listOfAllAttendants = eventManagement.listOfAllAttendants();
-                        System.out.println("Here are the names of all the participants at the graduation ceremony");
-                        for(Person p : listOfAllAttendants) {
-                            System.out.println(p.getName());
-                        }
-                        System.out.println();
-                        break;
-                    }
-                    case "4" : {
-                        //list participants for å chosen program
-                        //1. design 2. health 3. it 4. economy
-                        System.out.println("Choose program:");
-                        System.out.println("1. Design");
-                        System.out.println("2. Health");
-                        System.out.println("3. IT");
-                        System.out.println("4. Economy");
-
-                        String program = scanner.nextLine();
-
-                        List<Attendant> listOfAllStudentsAttending = eventManagement.listOfStudentsAttending();
-
-                        switch(program) {
-                            case "1" : {
-                                System.out.println("List of students from the program 'Design':");
-                                boolean emptyList = true;
-                                for(Attendant a : listOfAllStudentsAttending) {
-                                    if(a.getStudyProgram().equalsIgnoreCase("design")) {
-                                        System.out.println(a.getName());
-                                        emptyList = false;
-                                    }
-                                }
-                                System.out.println();
-                                if(emptyList) {
-                                    System.out.println("No participants from the program 'Design'");
-                                    System.out.println();
-                                }
-                                break;
-                            }
-                            case "2" : {
-                                System.out.println("List of students from the program 'Health'");
-                                boolean emptyList = true;
-                                for(Attendant a : listOfAllStudentsAttending) {
-                                    if(a.getStudyProgram().equalsIgnoreCase("health")) {
-                                        System.out.println(a.getName());
-                                        emptyList = false;
-                                    }
-                                }
-                                System.out.println();
-                                if(emptyList) {
-                                    System.out.println("No participants from the program 'Health");
-                                    System.out.println();
-                                }
-                                break;
-                            }
-                            case "3" : {
-                                System.out.println("List of students from the program 'IT'");
-                                boolean emptyList = true;
-                                for(Attendant a : listOfAllStudentsAttending) {
-                                    if(a.getStudyProgram().equalsIgnoreCase("it")) {
-                                        System.out.println(a.getName());
-                                        emptyList = false;
-                                    }
-                                }
-                                System.out.println();
-                                if(emptyList) {
-                                    System.out.println("No participants from the program 'IT");
-                                    System.out.println();
-                                }
-                                break;
-                            }
-                            case "4" : {
-                                System.out.println("List of students from the program 'Economy'");
-                                boolean emptyList = true;
-                                for(Attendant a : listOfAllStudentsAttending) {
-                                    if(a.getStudyProgram().equalsIgnoreCase("economy")) {
-                                        System.out.println(a.getName());
-                                        emptyList = false;
-                                    }
-                                }
-                                System.out.println();
-                                if(emptyList) {
-                                    System.out.println("No participants from the program 'Economy");
-                                    System.out.println();
-                                }
-                                break;
-                            }
-                            default : {
-                                System.out.println("Invalid input");
-                                System.out.println();
-                            }
-                        }
-
-                        break;
-                    }
-                    case "5" : {
-                        //search for participant by name
-                        System.out.println("Type the name you're searching for");
-                        String name = scanner.nextLine();
-                        eventManagement.searchForPersonAttending(name);
-                        break;
-                    }
-                    case "6" : {
-                        //see the program
-                        eventManagement.printProgram(student);
-                        break;
-                    }
-                    case "7" : {
-                        //remove a registration
-                        eventManagement.removeRegistration(student);
-                        System.out.println("You are now removed from the registration");
-                        System.out.println("If you change your mind, feel free to log in register again");
-                        keepRunning = false;
-                        break;
-                    }
-                    case "8" : {
-                        //change guests
-                        eventManagement.modifyRegistration(scanner, student);
-                        break;
-                    }
-                    case "9" : {
-                        //sign out
-                        keepRunning = false;
-                        break;
-                    }
-                    default : {
-                        System.out.println("Invalid input!");
-                    }
+                    break;
+                }
+                case "5" : {
+                    //search for in participants by name
+                    System.out.println("Type the name you're searching for");
+                    String name = scanner.nextLine();
+                    eventManagement.searchForPersonAttending(name);
+                    break;
+                }
+                case "6" : {
+                    //see the program (for users that are students)
+                    eventManagement.printProgram(student);
+                    break;
+                }
+                case "7" : {
+                    //remove a registration
+                    eventManagement.removeRegistration(student);
+                    System.out.println("You are now removed from the registration");
+                    System.out.println("If you change your mind, feel free to log in register again");
+                    keepRunning = false;
+                    break;
+                }
+                case "8" : {
+                    //change guests
+                    eventManagement.modifyRegistration(scanner, student);
+                    break;
+                }
+                case "9" : {
+                    //sign out
+                    keepRunning = false;
+                    break;
+                }
+                default : {
+                    System.out.println("Invalid input!");
                 }
             }
+        }
     }
+
+    //method to print menu to users logged in as student, returns a string with the users choice from the menu
     private String printStudentMenu(Scanner scanner) {
             System.out.println("Here are your options:");
             System.out.println("1. Register for the event");
