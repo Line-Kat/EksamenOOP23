@@ -115,6 +115,22 @@ public class JDBCEvent {
         return null;
     }
 
+    public void deleteGuest(Attendant attendant, String nameGuest) {
+        String deleteFromGuestsQuery = "DELETE FROM guests WHERE attendants_idAttendant=? AND nameGuest=?;";
+
+        try(Connection con = jdbcOps.getConnection(database);
+            PreparedStatement stmt = con.prepareStatement(deleteFromGuestsQuery)) {
+
+            stmt.setInt(1, attendant.getId());
+            stmt.setString(2, nameGuest);
+            stmt.executeUpdate();
+
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
     public void insertGuest(Attendant attendant, Guest guest) {
         String insertGuestQuery = "INSERT INTO guests(attendants_idAttendant, nameGuest) VALUES(?, ?);";
 

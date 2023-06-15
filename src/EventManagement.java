@@ -40,6 +40,37 @@ public class EventManagement {
         for(Attendant a : listAllStudentsAttending) {
             if(a.getName().equalsIgnoreCase(student.getName())) {
                 jdbcEvent.deleteFromAttendants(a);
+            }
+        }
+    }
+
+    public void modifyRegistration(Scanner scanner, Student student) {
+        System.out.println("You can change your guests");
+        System.out.println("1. To remove guests");
+        System.out.println("2. To add guests");
+
+        String userInput = scanner.nextLine();
+        List<Attendant> listAllStudentsAttending = jdbcEvent.listOfStudentAttending();
+
+        for(Attendant a : listAllStudentsAttending) {
+            if(a.getName().equalsIgnoreCase(student.getName()) && userInput.equals("1")) {
+                List<Guest> listOfGuests = jdbcEvent.listOGuests();
+                System.out.println("Type the name of the guest you want to remove");
+                String nameGuest = scanner.nextLine();
+
+                for(Guest g : listOfGuests) {
+                    if(g.getName().equalsIgnoreCase(nameGuest)) {
+                        jdbcEvent.deleteGuest(a, nameGuest);
+                        break;
+                    }
+                }
+                return;
+            }
+            if(a.getName().equalsIgnoreCase(student.getName()) && userInput.equals("2")) {
+                System.out.println("Type the name of the guest you want to add");
+                String nameGuest = scanner.nextLine();
+                Guest guest = new Guest(null, nameGuest);
+                jdbcEvent.insertGuest(a, guest);
                 return;
             }
         }
