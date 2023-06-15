@@ -2,14 +2,14 @@ package domain;
 
 public class Attendant extends Person{
     //fields
-    private AttendantRole attendantRole;
+    private String attendantRole; //student, teacher or program responsible
     private String studyProgram;
 
     //constructor
-    public Attendant(Integer idAttendant, String nameAttendant, AttendantRole attendantRole, String styudyProgram) {
+    public Attendant(Integer idAttendant, String nameAttendant, String attendantRole, String studyProgram) {
         super(idAttendant, nameAttendant);
         this.attendantRole = attendantRole;
-        this.studyProgram = styudyProgram;
+        this.studyProgram = studyProgram;
     }
 
     //getters and setters
